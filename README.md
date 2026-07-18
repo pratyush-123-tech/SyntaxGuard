@@ -1,6 +1,4 @@
 <div align="center">
-  <img src="client/public/favicon.ico" alt="SyntaxGuard Logo" width="80" height="80">
-
   # SyntaxGuard
   
   **Your AI code reviewer that never sleeps.**
@@ -117,18 +115,7 @@ npm run dev
 
 Navigate to `http://localhost:5173` to see the application running.
 
----
 
-## 📸 Screenshots
-
-*(Add screenshots of your application here before publishing to your portfolio)*
-
-- **Landing Page:** 
-- **Dashboard:** 
-- **Live Code Editor:** 
-- **GitHub PR Review Example:** 
-
----
 
 ## 🤝 Contributing
 
