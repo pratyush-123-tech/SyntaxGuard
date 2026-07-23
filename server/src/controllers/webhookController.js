@@ -59,30 +59,29 @@ Return ONLY valid JSON. No extra text.
 // Converts AI issues into GitHub PR review comment objects.
 // GitHub requires: { path, line, body, side: 'RIGHT' }
 const formatReviewComments = (issues) => {
-  const sevEmoji = {
-    critical: '🚨',
-    high: '🔴',
-    medium: '🟡',
-    low: '🟢',
-    info: 'ℹ️',
+  const alertMap = {
+    critical: '> [!CAUTION]',
+    high: '> [!WARNING]',
+    medium: '> [!IMPORTANT]',
+    low: '> [!NOTE]',
+    info: '> [!NOTE]',
   };
 
   return issues
     .filter(issue => issue.filename && issue.line)
     .map(issue => {
-      const emoji = sevEmoji[issue.severity] || 'ℹ️';
-      let body = `${emoji} **${issue.severity?.toUpperCase()} — ${issue.title}**\n\n`;
-      body += `${issue.description}\n\n`;
+      const alertType = alertMap[issue.severity] || '> [!NOTE]';
+      let body = `${alertType}\n> **${issue.title}**\n>\n> ${issue.description}\n`;
 
       if (issue.suggestion) {
-        body += `**💡 Suggestion:** ${issue.suggestion}\n\n`;
+        body += `\n**💡 Suggestion:** ${issue.suggestion}\n`;
       }
 
       if (issue.refactoredCode) {
-        body += `**⚡ Fix:**\n\`\`\`\n${issue.refactoredCode}\n\`\`\`\n`;
+        body += `\n**⚡ Fix:**\n\`\`\`javascript\n${issue.refactoredCode}\n\`\`\`\n`;
       }
 
-      body += `\n*Reviewed by [SyntaxGuard](${clientUrl}) · Severity: \`${issue.severity}\` · Category: \`${issue.category}\`*`;
+      body += `\n---\n<div align="right"><sub><strong>Category:</strong> <code>${issue.category}</code></sub></div>`;
 
       return {
         path: issue.filename,
@@ -96,31 +95,40 @@ const formatReviewComments = (issues) => {
 // ─── buildSummaryComment ──────────────────────────────────────────────────────
 const buildSummaryComment = (aiResult, filesReviewed) => {
   const score = aiResult.score || 0;
-  const scoreBar = '█'.repeat(Math.round(score / 10)) + '░'.repeat(10 - Math.round(score / 10));
-  const scoreEmoji = score >= 75 ? '✅' : score >= 50 ? '⚠️' : '🚨';
-
+  
   const criticalCount = aiResult.issues?.filter(i => i.severity === 'critical').length || 0;
   const highCount     = aiResult.issues?.filter(i => i.severity === 'high').length || 0;
   const mediumCount   = aiResult.issues?.filter(i => i.severity === 'medium').length || 0;
   const lowCount      = aiResult.issues?.filter(i => ['low','info'].includes(i.severity)).length || 0;
 
-  return `## 🤖 AI Code Review
+  const alertType = score >= 75 ? '> [!TIP]' : score >= 50 ? '> [!IMPORTANT]' : '> [!CAUTION]';
 
-${scoreEmoji} **Score: ${score}/100**  \`${scoreBar}\`
+  return `<h2>🛡️ SyntaxGuard Code Analysis</h2>
 
-**${aiResult.summary || 'Review complete.'}**
+${alertType}
+> **Code Quality Score: ${score}/100**
+> 
+> ${aiResult.summary || 'Analysis complete.'}
+
+<details>
+<summary><b>📊 View Detailed Severity Breakdown</b></summary>
+<br>
 
 | Severity | Count |
 |----------|-------|
-| 🚨 Critical | ${criticalCount} |
-| 🔴 High | ${highCount} |
-| 🟡 Medium | ${mediumCount} |
-| 🟢 Low / Info | ${lowCount} |
+| 🛑 **Critical** | ${criticalCount} |
+| ⚠️ **High** | ${highCount} |
+| 🟨 **Medium** | ${mediumCount} |
+| 🟦 **Low / Info** | ${lowCount} |
 
-**Files reviewed:** ${filesReviewed}
+</details>
+
+**Files reviewed:** \`${filesReviewed}\`
 
 ---
-*Powered by [SyntaxGuard](${clientUrl}) using Groq LLaMA 3.3 70B*`;
+<div align="right">
+  <sub>Powered by <a href="${clientUrl}"><b>SyntaxGuard AI</b></a> using Groq LLaMA 3.3 70B</sub>
+</div>`;
 };
 
 // ─── handlePullRequestEvent ───────────────────────────────────────────────────
