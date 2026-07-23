@@ -21,6 +21,7 @@ IMPORTANT RULES:
 - ONLY review lines that appear in the diff (ignore context lines that haven't changed)
 - Use the EXACT line number shown in the prefix for your issue reports
 - Report issues per file using the filename shown in "### File:" headings
+- BE RUTHLESS AND EXHAUSTIVE. Find EVERY single bug, vulnerability, and bad practice. Do NOT stop after finding just 1 or 2 issues. List ALL of them.
 
 Return ONLY valid JSON in this format:
 {
