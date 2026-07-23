@@ -21,7 +21,8 @@ export const streamAnalysis = async (code, language, repositoryId, onChunk, onDo
   const token = localStorage.getItem('accessToken');
 
   // Use public route if not logged in, protected route if logged in
-  const url = token ? '/api/analysis/stream' : '/api/public/analysis/stream';
+  const API_URL = import.meta.env.VITE_API_URL || '';
+  const url = token ? `${API_URL}/api/analysis/stream` : `${API_URL}/api/public/analysis/stream`;
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 

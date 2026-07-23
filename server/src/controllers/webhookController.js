@@ -5,6 +5,8 @@ const { getFromCache, saveToCache } = require('../services/cacheService');
 const GithubReview = require('../models/GithubReview');
 const GithubInstallation = require('../models/GithubInstallation');
 
+const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+
 // ─── buildDiffPrompt ──────────────────────────────────────────────────────────
 // Generates the AI prompt for reviewing a Git diff.
 // The AI only sees the added/changed lines, pre-numbered.
@@ -79,7 +81,7 @@ const formatReviewComments = (issues) => {
         body += `**⚡ Fix:**\n\`\`\`\n${issue.refactoredCode}\n\`\`\`\n`;
       }
 
-      body += `\n*Reviewed by [SyntaxGuard](http://localhost:5173) · Severity: \`${issue.severity}\` · Category: \`${issue.category}\`*`;
+      body += `\n*Reviewed by [SyntaxGuard](${clientUrl}) · Severity: \`${issue.severity}\` · Category: \`${issue.category}\`*`;
 
       return {
         path: issue.filename,
@@ -117,7 +119,7 @@ ${scoreEmoji} **Score: ${score}/100**  \`${scoreBar}\`
 **Files reviewed:** ${filesReviewed}
 
 ---
-*Powered by [SyntaxGuard](http://localhost:5173) using Groq LLaMA 3.3 70B*`;
+*Powered by [SyntaxGuard](${clientUrl}) using Groq LLaMA 3.3 70B*`;
 };
 
 // ─── handlePullRequestEvent ───────────────────────────────────────────────────
