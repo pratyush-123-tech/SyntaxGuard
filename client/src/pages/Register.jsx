@@ -49,7 +49,7 @@ const Register = () => {
             borderRadius: '6px', fontSize: '0.85rem', marginBottom: '20px',
             textAlign: 'center'
           }}>
-            {error}
+            {typeof error === 'string' ? error : error.message || JSON.stringify(error)}
           </div>
         )}
 
