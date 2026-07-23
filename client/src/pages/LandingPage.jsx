@@ -162,7 +162,7 @@ const LandingPage = () => {
 
         {/* CTA buttons */}
         <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 64 }}>
-          <Link to={isAuthenticated ? '/' : '/register'} className="hero-btn" style={{ padding: '14px 32px', background: 'linear-gradient(135deg, #58a6ff, #388bfd)', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: '1rem', textDecoration: 'none', boxShadow: '0 4px 24px rgba(88,166,255,0.4)', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+          <Link to={isAuthenticated ? '/' : '/editor'} className="hero-btn" style={{ padding: '14px 32px', background: 'linear-gradient(135deg, #58a6ff, #388bfd)', borderRadius: 10, color: '#fff', fontWeight: 700, fontSize: '1rem', textDecoration: 'none', boxShadow: '0 4px 24px rgba(88,166,255,0.4)', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
             Start reviewing for free
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
           </Link>
@@ -271,7 +271,7 @@ const LandingPage = () => {
               <div style={{ fontWeight: 600, fontSize: '0.95rem', marginBottom: 2 }}>Ready to review your own code?</div>
               <div style={{ fontSize: '0.82rem', color: '#8b949e' }}>Paste any snippet and get results in &lt;3 seconds — no account needed.</div>
             </div>
-            <Link to={isAuthenticated ? '/' : '/register'} style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #58a6ff, #388bfd)', borderRadius: 8, color: '#fff', fontWeight: 700, fontSize: '0.9rem', textDecoration: 'none', whiteSpace: 'nowrap', boxShadow: '0 4px 16px rgba(88,166,255,0.35)' }}>
+            <Link to={isAuthenticated ? '/' : '/editor'} style={{ padding: '10px 24px', background: 'linear-gradient(135deg, #58a6ff, #388bfd)', borderRadius: 8, color: '#fff', fontWeight: 700, fontSize: '0.9rem', textDecoration: 'none', whiteSpace: 'nowrap', boxShadow: '0 4px 16px rgba(88,166,255,0.35)' }}>
               Try it free →
             </Link>
           </div>
@@ -390,7 +390,7 @@ const LandingPage = () => {
           <p style={{ margin: '0 0 36px', color: '#8b949e', fontSize: '1rem', lineHeight: 1.7 }}>
             No credit card required. No install needed.<br />Just paste your code and let AI do the rest.
           </p>
-          <Link to={isAuthenticated ? '/' : '/register'} style={{ padding: '16px 40px', background: 'linear-gradient(135deg, #58a6ff, #388bfd)', borderRadius: 12, color: '#fff', fontWeight: 800, fontSize: '1.05rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 32px rgba(88,166,255,0.4)', animation: 'pulse-glow 3s ease-in-out infinite' }}>
+          <Link to={isAuthenticated ? '/' : '/editor'} style={{ padding: '16px 40px', background: 'linear-gradient(135deg, #58a6ff, #388bfd)', borderRadius: 12, color: '#fff', fontWeight: 800, fontSize: '1.05rem', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 32px rgba(88,166,255,0.4)', animation: 'pulse-glow 3s ease-in-out infinite' }}>
             Get started — it's free
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
           </Link>

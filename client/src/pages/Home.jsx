@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import CodeEditor from '../components/Editor/CodeEditor';
 import AnalysisPanel from '../components/Analysis/AnalysisPanel';
 import { streamAnalysis } from '../services/analysisService';
@@ -37,6 +39,13 @@ const Home = () => {
   const [repos, setRepos]         = useState([]);
   const [selectedRepoId, setSelectedRepoId] = useState('');
 
+  const { isAuthenticated } = useSelector(state => state.auth);
+  
+  const [freeAttempts, setFreeAttempts] = useState(() => {
+    const saved = localStorage.getItem('freeAttempts');
+    return saved !== null ? parseInt(saved, 10) : 3;
+  });
+
   // Fetch repos if user is logged in
   useEffect(() => {
     const fetchRepos = async () => {
@@ -55,6 +64,12 @@ const Home = () => {
 
   const handleAnalyze = async () => {
     if (!code.trim()) return;
+
+    if (!isAuthenticated && freeAttempts <= 0) {
+      setError('You have used all 3 free attempts. Please sign up to continue analyzing code!');
+      return;
+    }
+
     setError(null);
     setResult(null);
     setStreamBuffer('');
@@ -73,6 +88,12 @@ const Home = () => {
           setServedFromCache(finalResult.servedFromCache || false);
           setIsStreaming(false);
           setStreamBuffer('');
+
+          if (!isAuthenticated) {
+            const newAttempts = freeAttempts - 1;
+            setFreeAttempts(newAttempts);
+            localStorage.setItem('freeAttempts', newAttempts.toString());
+          }
         }
       );
     } catch (err) {
@@ -117,7 +138,14 @@ const Home = () => {
         {/* Action buttons */}
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           
-          {repos.length > 0 && (
+          {!isAuthenticated && (
+             <div style={{ marginRight: '16px', fontSize: '0.8rem', color: '#8b949e', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span>Free attempts left: <strong style={{ color: freeAttempts > 0 ? '#3fb950' : '#f85149' }}>{freeAttempts}/3</strong></span>
+                <Link to="/register" style={{ color: '#58a6ff', textDecoration: 'none', fontWeight: 600 }}>Sign up</Link>
+             </div>
+          )}
+
+          {isAuthenticated && repos.length > 0 && (
             <select
               value={selectedRepoId}
               onChange={(e) => setSelectedRepoId(e.target.value)}

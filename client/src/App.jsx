@@ -35,6 +35,7 @@ const AppShell = () => {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<SmartHome />} />
+            <Route path="/editor" element={<Home />} />
             <Route path="/landing" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
